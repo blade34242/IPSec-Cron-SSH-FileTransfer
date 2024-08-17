@@ -1,0 +1,27 @@
+services:
+  ipsecjobs:
+    build: .
+    container_name: ipsecjobs
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - /home/blade34242/apps/ipsecjobs/backups/backupsDone:/backupsDone
+      - /root/apps/backups:/backupsToDo:ro
+      - /home/blade34242/apps/ipsecjobs/fritzbox.conf:/etc/vpnc/fritzbox.conf
+      - /home/blade34242/apps/ipsecjobs/crontab:/etc/cron.d/backup-cron
+      - /home/blade34242/apps/ipsecjobs/ssh_keys:/root/.ssh
+      - /var/log/ipsecjobs:/var/log
+    environment:
+      - TZ=Europe/Zurich
+    command: /usr/local/bin/start.sh
+    networks:
+      - graylog_graylog_network
+
+networks:
+  graylog_graylog_network:
+    external: true
+
