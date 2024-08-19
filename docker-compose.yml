@@ -20,7 +20,12 @@ services:
     command: /usr/local/bin/start.sh
     networks:
       - graylog_graylog_network
-
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://172.21.0.88:1526"
+          #gelf-address: "udp://graylog:1524"
+        tag: "backup-job"
 networks:
   graylog_graylog_network:
     external: true
